@@ -1,0 +1,30 @@
+{
+  "name": "optivet",
+  "version": "1.0.0",
+  "description": "The OptiVet App uses a normalized relational schema to manage users, pets, appointments, medical records, messaging, and billing. Below is a high-level overview of the main tables and their relationships:",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd client && npm install && cd ../server && npm install",
+    "dev": "concurrently \"cd server && nodemon server.js\" \"cd client && npm start\"",
+    "build": "cd client && npm run build",
+    "start": "cd server && node server.js && cd client && npm start",
+    "server": "cd server && nodemon server.js",
+    "client": "cd client && npm start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LizaS2022/OPTIVET.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/LizaS2022/OPTIVET/issues"
+  },
+  "homepage": "https://github.com/LizaS2022/OPTIVET#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "nodemon": "^3.1.10"
+  }
+}
