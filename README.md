@@ -10,6 +10,16 @@ The OptiVet App uses a normalized relational schema to manage users, pets, appoi
 - **Bill**: Generated per appointment
 - **Payment**: Linked to a bill
 
+## Querries && Mutations:
+
+pet: viewPets, addPet, updatepet, deletePet
+
+user: viewUsers, addUser, updateuser, deleteUser
+
+appointment: viewAppointments, viewAppointmentsByPet, addAppointment, updateAppointment, deleteAppointment
+
+record: viewMedicalRecords, addMedicalRecord
+
 ### ERD Diagram
 
 > _You can visualize the ERD using tools like dbdiagram.io with the table definitions above._
