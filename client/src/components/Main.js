@@ -1,7 +1,7 @@
 import { PawPrint } from "lucide-react";
 import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-import logo from "../images/logo.jpg"; // Assuming you have a logo.svg in the src folder
+import logo from "../images/logo.jpg";
 import NavigationBar from "./NavigationBar";
 import SiteFooter from "./Footer";
 function Main() {
@@ -10,7 +10,6 @@ function Main() {
       <NavigationBar />
       <div className="d-flex flex-column min-vh-100">
         <main className="flex-grow-1">
-          {/* Hero Section with gradient */}
           <section
             className="py-5"
             style={{
