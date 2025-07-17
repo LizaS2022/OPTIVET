@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
 
 const {
   Appointment,
@@ -26,6 +27,23 @@ const resolvers = {
         throw new Error("Error fetching users: " + error.message);
       }
     },
+    viewUserById: async (_, { _id }) => {
+      try {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
+          throw new Error("Invalid or missing user ID.");
+        }
+        const user = await User.findById(_id);
+        if (!user) {
+          throw new Error("User not found.");
+        }
+        return user;
+      } catch (error) {
+        throw new Error("Error fetching user: " + error.message);
+      }
+    },
+    viewUserByEmail: async (_, { email }) => {
+      return await User.findOne({ email }).populate("pets");
+    },
     viewAppointments: async () => {
       try {
         return await Appointment.find()
@@ -51,6 +69,24 @@ const resolvers = {
         );
       }
     },
+    viewAppointmentByDate: async (_, { date }) => {
+      try {
+        if (!date) {
+          throw new Error("Date is required.");
+        }
+        const appointments = await Appointment.find({
+          datetime: { $gte: new Date(date), $lt: new Date(date + "T23:59:59") },
+        })
+          .populate("pet")
+          .populate("owner")
+          .populate("vet");
+        return appointments;
+      } catch (error) {
+        throw new Error(
+          "Error fetching appointments by date: " + error.message
+        );
+      }
+    },
     viewMedicalRecords: async () => {
       try {
         return await MedicalRecord.find()
@@ -61,8 +97,27 @@ const resolvers = {
         throw new Error("Error fetching medical records: " + error.message);
       }
     },
+    viewPetsByOwner: async (_, { ownerId }) => {
+      try {
+        if (!ownerId || !mongoose.Types.ObjectId.isValid(ownerId)) {
+          throw new Error("Invalid or missing owner ID.");
+        }
+        return await Pet.find({ owner: ownerId })
+          .populate("owner")
+          .populate("vet");
+      } catch (error) {
+        throw new Error("Error fetching pets by owner: " + error.message);
+      }
+    },
   },
   Mutation: {
+    loginUser: async (_, { email, password }) => {
+      const user = await User.findOne({ email });
+      if (!user) throw new Error("User not found.");
+      const valid = await bcrypt.compare(password, user.passwordHash);
+      if (!valid) throw new Error("Invalid password.");
+      return user;
+    },
     addPet: async (_, args) => {
       try {
         const { name, species, breed, dob, gender, allergies, ownerId, vetId } =
@@ -142,11 +197,22 @@ const resolvers = {
 
     addUser: async (_, args) => {
       try {
+        const { password, ...rest } = args;
+
         const existing = await User.findOne({ email: args.email });
         if (existing) {
           throw new Error("User with this email already exists.");
         }
-        const user = new User(args);
+
+        // Hash the incoming plain password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // Create user with hashed password stored as passwordHash
+        const user = new User({
+          ...rest, // includes name, email, role, phone, address
+          passwordHash: hashedPassword, // safe field
+        });
+
         await user.save();
         return user;
       } catch (error) {
@@ -154,6 +220,7 @@ const resolvers = {
         throw new Error("Error adding user: " + error.message);
       }
     },
+
     updateUser: async (_, args) => {
       try {
         const { userId, ...updateFields } = args;
@@ -175,13 +242,13 @@ const resolvers = {
         throw new Error("Error updating user: " + error.message);
       }
     },
-    deleteUser: async (_, { userId }) => {
+    deleteUser: async (_, { _id }) => {
       try {
-        if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
           throw new Error("Invalid or missing user ID.");
         }
 
-        const deletedUser = await User.findByIdAndDelete(userId);
+        const deletedUser = await User.findByIdAndDelete(_id);
         if (!deletedUser) {
           throw new Error("User not found.");
         }
@@ -191,11 +258,24 @@ const resolvers = {
         throw new Error("Error deleting user: " + error.message);
       }
     },
-    addAppointment: async (_, args) => {
+    addAppointment: async (
+      _,
+      { petId, ownerId, vetId, appt_date, appt_time, reason }
+    ) => {
       try {
-        const appointment = new Appointment(args);
+        const appointment = new Appointment({
+          pet: petId,
+          owner: ownerId,
+          vet: vetId || null,
+          appt_date: new Date(appt_date),
+          appt_time,
+          reason,
+        });
         await appointment.save();
-        return appointment;
+        return await Appointment.findById(appointment._id)
+          .populate("pet")
+          .populate("owner")
+          .populate("vet");
       } catch (error) {
         throw new Error("Error adding appointment: " + error.message);
       }

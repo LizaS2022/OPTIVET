@@ -4,7 +4,8 @@ const typeDefs = gql`
 
   type User {
     _id: ID
-    name: String
+    first_name: String
+    last_name: String
     email: String
     passwordHash: String
     role: String
@@ -14,7 +15,6 @@ const typeDefs = gql`
   type Pet {
     _id: ID
     name: String!
-    species: String
     breed: String
     dob: Date
     gender: String
@@ -38,24 +38,28 @@ const typeDefs = gql`
     pet: Pet
     owner: User
     vet: User
-    datetime: Date
-    status: String
+    appt_date: Date
+    appt_time: String
     reason: String
-    notes: String
   }
 
   type Query {
-    viewUsers: [User]
     viewPets: [Pet]
-    viewMedicalRecords: [MedicalRecord]
+    viewUsers: [User]
+    viewUserById(_id: ID!): User
+    viewUserByEmail(email: String!): User
     viewAppointments: [Appointment]
     viewAppointmentsByPet(petId: ID!): [Appointment]
+    viewAppointmentByDate(date: Date!): [Appointment]
+    viewPetsByOwner(ownerId: ID!): [Pet]
+    viewMedicalRecords: [MedicalRecord]
   }
   type Mutation {
     addUser(
-      name: String
+      first_name: String!
+      last_name: String!
       email: String!
-      passwordHash: String!
+      password: String!
       role: String!
       phone: String!
       address: String!
@@ -63,7 +67,8 @@ const typeDefs = gql`
 
     updateUser(
       _id: ID!
-      name: String
+      first_name: String!
+      last_name: String!
       email: String
       passwordHash: String
       role: String
@@ -71,22 +76,16 @@ const typeDefs = gql`
       address: String
     ): User
 
+    loginUser(email: String!, password: String!): User
     deleteUser(_id: ID!): User
     deletePet(_id: ID!): Pet
     deleteMedicalRecord(_id: ID!): MedicalRecord
     deleteAppointment(_id: ID!): Appointment
 
-    updatePet(
-      _id: ID!
-      name: String
-      species: String
-      breed: String
-      dob: Date
-    ): Pet
+    updatePet(_id: ID!, name: String, breed: String, dob: Date): Pet
 
     addPet(
       name: String!
-      species: String!
       breed: String!
       dob: Date!
       gender: String!
@@ -107,11 +106,10 @@ const typeDefs = gql`
     addAppointment(
       petId: ID!
       ownerId: ID!
-      vetId: ID!
-      datetime: Date!
-      status: String
+      vetId: ID
+      appt_date: String!
+      appt_time: String!
       reason: String
-      notes: String
     ): Appointment
 
     updateAppointment(
@@ -119,10 +117,9 @@ const typeDefs = gql`
       petId: ID
       ownerId: ID
       vetId: ID
-      datetime: Date
-      status: String
+      appt_date: Date
+      appt_time: String
       reason: String
-      notes: String
     ): Appointment
 
     updateMedicalRecord(

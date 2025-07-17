@@ -7,11 +7,6 @@ const petSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    species: {
-      type: String,
-      required: true,
-      trim: true,
-    },
     breed: {
       type: String,
       required: true,

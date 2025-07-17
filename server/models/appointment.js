@@ -8,15 +8,10 @@ const appointmentSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     }, // pet owner
-    vet: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true }, // assigned vet
-    datetime: { type: Date, required: true },
-    status: {
-      type: String,
-      enum: ["booked", "completed", "cancelled"],
-      default: "booked",
-    },
+    vet: { type: mongoose.Schema.Types.ObjectId, ref: "User" }, // assigned vet
+    appt_date: { type: Date, required: true },
+    appt_time: { type: String, required: true },
     reason: String,
-    notes: String,
   },
   { timestamps: true }
 );
