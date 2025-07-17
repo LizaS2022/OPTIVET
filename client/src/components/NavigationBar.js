@@ -2,7 +2,7 @@ import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { PawPrint } from "lucide-react";
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import { useAuth } from "../hooks/use_auth"; // adjust path as needed
+import { useAuth } from "../hooks/use_auth";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const NavigationBar = () => {
