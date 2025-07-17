@@ -92,3 +92,37 @@ export const DELETE_USER = gql`
     }
   }
 `;
+
+export const DELETE_APPT = gql`
+  mutation deleteAppointment($id: ID!) {
+    deleteAppointment(_id: $id) {
+      _id
+      pet {
+        _id
+        name
+        breed
+        dob
+      }
+      owner {
+        _id
+        first_name
+        last_name
+        email
+        phone
+        address
+      }
+      vet {
+        _id
+        first_name
+        last_name
+        email
+        phone
+        address
+      }
+      appt_date
+      appt_time
+      status
+      reason
+    }
+  }
+`;

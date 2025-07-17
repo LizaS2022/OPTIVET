@@ -306,17 +306,21 @@ const resolvers = {
         throw new Error("Error updating appointment: " + error.message);
       }
     },
-    deleteAppointment: async (_, { appointmentId }) => {
+    deleteAppointment: async (_, { _id }) => {
       try {
-        if (!appointmentId || !mongoose.Types.ObjectId.isValid(appointmentId)) {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
           throw new Error("Invalid or missing appointment ID.");
         }
 
         const deletedAppointment = await Appointment.findByIdAndDelete(
-          appointmentId
-        );
+          _id
+        ).populate("pet");
         if (!deletedAppointment) {
           throw new Error("Appointment not found.");
+        }
+
+        if (!deletedAppointment.pet) {
+          throw new Error("Associated pet not found.");
         }
 
         return deletedAppointment;
