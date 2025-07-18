@@ -22,7 +22,7 @@ function Main() {
               <div className="row align-items-center g-5">
                 <div className="col-lg-6">
                   <h1 className="display-4 fw-bold">
-                    Welcome to PawCare Veterinary Clinic
+                    Welcome to OptiVet Veterinary Clinic
                   </h1>
                   <p className="lead text-muted" style={{ maxWidth: "600px" }}>
                     Providing exceptional care for your furry family members.
