@@ -13,7 +13,7 @@ function Main() {
           <section
             className="py-5"
             style={{
-              background: "linear-gradient(to bottom, white, #f8fafc)", // equivalent to from-white to-slate-50
+              background: "linear-gradient(to bottom, white, #f8fafc)",
               paddingTop: "6rem",
               paddingBottom: "8rem",
             }}

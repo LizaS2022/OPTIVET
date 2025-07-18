@@ -25,7 +25,7 @@ const NavigationBar = () => {
           className="d-flex align-items-center gap-2 fw-bold"
         >
           <PawPrint size={20} />
-          PawCare Clinic
+          OptiVet Clinic
         </Navbar.Brand>
 
         <Navbar.Toggle aria-controls="main-navbar" />
