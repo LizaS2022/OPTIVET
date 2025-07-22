@@ -33,6 +33,7 @@ export function AuthProvider({ children }) {
       const userData = data.loginUser;
       setUser(userData);
       localStorage.setItem("user", JSON.stringify(userData));
+      return userData;
     } catch (err) {
       console.error("Login failed", err);
       throw err;

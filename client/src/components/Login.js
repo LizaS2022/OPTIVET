@@ -26,8 +26,9 @@ export default function LoginPage() {
     console.log("Login form submitted:", email, password);
 
     try {
-      await login(email, password);
-      navigate("/dashboard");
+      const user = await login(email, password);
+      console.log("Login successful:", user);
+      navigate("/dashboard/");
     } catch (err) {
       setError("Invalid email or password");
     }
