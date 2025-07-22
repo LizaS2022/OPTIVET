@@ -22,7 +22,6 @@ record: viewMedicalRecords, addMedicalRecord
 
 ### ERD Diagram
 
-> _You can visualize the ERD using tools like dbdiagram.io with the table definitions above._
 
 ### Example Table Relationships
 
