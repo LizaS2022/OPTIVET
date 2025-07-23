@@ -15,7 +15,8 @@ import SignupPage from "./components/signup";
 import LoginPage from "./components/Login";
 import ScheduleAppointment from "./components/BookAppointment";
 import ProtectedRoute from "./components/ProtectedRoute";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/UserDashboard";
+import ApptConfirmation from "./components/ApptConfirmation";
 
 const client = new ApolloClient({
   uri: "http://localhost:3001/graphql",
@@ -48,6 +49,10 @@ function App() {
                     <ScheduleAppointment />
                   </ProtectedRoute>
                 }
+              />
+              <Route
+                path="/book-appointment/confirmation/:userId"
+                element={<ApptConfirmation />}
               />
             </Routes>
           </div>

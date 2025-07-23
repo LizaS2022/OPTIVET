@@ -12,7 +12,9 @@ export default function Dashboard() {
       <NavigationBar />
       <div className="container py-5">
         <h2>
-          Welcome, {user?.firstName} {user?.lastName}{" "}
+          Welcome,{" "}
+          {user?.first_name.charAt(0).toUpperCase() + user.first_name.slice(1)}{" "}
+          {user?.last_name.charAt(0).toUpperCase() + user.last_name.slice(1)}{" "}
         </h2>
         <div className="px-6 py-3">
           <ScheduleAppointment />

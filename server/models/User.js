@@ -42,7 +42,15 @@ const userSchema = new mongoose.Schema(
       enum: ["owner", "veterinarian", "staff", "admin"],
       required: true,
     },
-    phone: { type: String, required: true },
+    phone: {
+      type: String,
+      required: true,
+      validate: {
+        validator: function (v) {
+          return /^\+?[1-9]\d{1,14}$/.test(v);
+        },
+      },
+    },
     address: {
       type: String,
       required: true,
@@ -53,6 +61,12 @@ const userSchema = new mongoose.Schema(
         },
       },
     },
+    appointments: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Appointment",
+      },
+    ],
   },
   { timestamps: true }
 );

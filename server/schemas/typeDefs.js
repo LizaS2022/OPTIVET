@@ -11,6 +11,7 @@ const typeDefs = gql`
     role: String
     phone: String
     address: String
+    appointments: [Appointment]
   }
   type Pet {
     _id: ID
@@ -49,6 +50,7 @@ const typeDefs = gql`
     viewUserById(_id: ID!): User
     viewUserByEmail(email: String!): User
     viewAppointments: [Appointment]
+    viewAppointment(_id: ID!): Appointment
     viewAppointmentsByPet(petId: ID!): [Appointment]
     viewAppointmentByDate(date: Date!): [Appointment]
     viewPetsByOwner(ownerId: ID!): [Pet]

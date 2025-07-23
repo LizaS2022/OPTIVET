@@ -68,7 +68,7 @@ export default function ScheduleAppointment() {
         appt_time,
         reason
       );
-      navigate(`/confirmation/${data._id}`);
+      navigate(`/book-appointment/confirmation/${user._id}`);
     } catch (error) {
       console.error("Error booking appointment:", {
         message: error.message,

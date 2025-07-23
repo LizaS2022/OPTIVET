@@ -32,7 +32,10 @@ const resolvers = {
         if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
           throw new Error("Invalid or missing user ID.");
         }
-        const user = await User.findById(_id);
+        const user = await User.findById(_id).populate({
+          path: "appointments",
+          populate: [{ path: "pet" }, { path: "vet" }, { path: "owner" }],
+        });
         if (!user) {
           throw new Error("User not found.");
         }
@@ -52,6 +55,23 @@ const resolvers = {
           .populate("vet");
       } catch (error) {
         throw new Error("Error fetching appointments: " + error.message);
+      }
+    },
+    viewAppointment: async (_, { _id }) => {
+      try {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
+          throw new Error("Invalid or missing appointment ID.");
+        }
+        const appointment = await Appointment.findById(_id)
+          .populate("pet")
+          .populate("owner")
+          .populate("vet");
+        if (!appointment) {
+          throw new Error("Appointment not found.");
+        }
+        return appointment;
+      } catch (error) {
+        throw new Error("Error fetching appointment: " + error.message);
       }
     },
     viewAppointmentsByPet: async (_, { petId }) => {
@@ -157,13 +177,13 @@ const resolvers = {
     },
     updatePet: async (_, args) => {
       try {
-        const { petId, ...updateFields } = args;
+        const { _id, ...updateFields } = args;
 
-        if (!petId || !mongoose.Types.ObjectId.isValid(petId)) {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
           throw new Error("Invalid or missing pet ID.");
         }
 
-        const updatedPet = await Pet.findByIdAndUpdate(petId, updateFields, {
+        const updatedPet = await Pet.findByIdAndUpdate(_id, updateFields, {
           new: true,
         })
           .populate("owner")
@@ -223,13 +243,13 @@ const resolvers = {
 
     updateUser: async (_, args) => {
       try {
-        const { userId, ...updateFields } = args;
+        const { _id, ...updateFields } = args;
 
-        if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
           throw new Error("Invalid or missing user ID.");
         }
 
-        const updatedUser = await User.findByIdAndUpdate(userId, updateFields, {
+        const updatedUser = await User.findByIdAndUpdate(_id, updateFields, {
           new: true,
         });
 
@@ -272,6 +292,12 @@ const resolvers = {
           reason,
         });
         await appointment.save();
+
+        //Populating user appointment array
+        await User.findByIdAndUpdate(ownerId, {
+          $push: { appointments: appointment._id },
+        });
+
         return await Appointment.findById(appointment._id)
           .populate("pet")
           .populate("owner")
@@ -282,14 +308,14 @@ const resolvers = {
     },
     updateAppointment: async (_, args) => {
       try {
-        const { appointmentId, ...updateFields } = args;
+        const { _id, ...updateFields } = args;
 
-        if (!appointmentId || !mongoose.Types.ObjectId.isValid(appointmentId)) {
+        if (!_id || !mongoose.Types.ObjectId.isValid(_id)) {
           throw new Error("Invalid or missing appointment ID.");
         }
 
         const updatedAppointment = await Appointment.findByIdAndUpdate(
-          appointmentId,
+          _id,
           updateFields,
           { new: true }
         )
@@ -330,27 +356,28 @@ const resolvers = {
     },
     addMedicalRecord: async (_, args) => {
       try {
-        const { pet, appointment, vet, diagnosis, treatment, notes } = args;
+        const { petId, appointmentId, vetId, diagnosis, treatment, notes } =
+          args;
 
         // Validate pet ID
-        if (!pet || !mongoose.Types.ObjectId.isValid(pet)) {
+        if (!petId || !mongoose.Types.ObjectId.isValid(petId)) {
           throw new Error("Invalid or missing pet ID.");
         }
 
         // Validate appointment ID
-        if (!appointment || !mongoose.Types.ObjectId.isValid(appointment)) {
+        if (!appointmentId || !mongoose.Types.ObjectId.isValid(appointmentId)) {
           throw new Error("Invalid or missing appointment ID.");
         }
 
         // Validate vet ID
-        if (!vet || !mongoose.Types.ObjectId.isValid(vet)) {
+        if (!vetId || !mongoose.Types.ObjectId.isValid(vetId)) {
           throw new Error("Invalid or missing vet ID.");
         }
 
         const medicalRecord = new MedicalRecord({
-          pet,
-          appointment,
-          vet,
+          petId,
+          appointmentId,
+          vetId,
           diagnosis,
           treatment,
           notes,
