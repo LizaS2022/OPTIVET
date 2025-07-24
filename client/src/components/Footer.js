@@ -14,7 +14,7 @@ function SiteFooter() {
                 className="d-flex align-items-center mb-2 text-dark text-decoration-none"
               >
                 <PawPrint size={24} className="me-2" />
-                <span className="fw-bold">PawCare Clinic</span>
+                <span className="fw-bold">OptiVet Clinic</span>
               </Link>
               <small className="text-muted">
                 Providing exceptional veterinary care since 2005
