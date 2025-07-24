@@ -100,7 +100,7 @@ function SiteFooter() {
             <ul className="list-unstyled small text-muted">
               <li>
                 <Link to="/blog" className="text-decoration-none text-muted">
-                  Pet Care Blog
+                  OptiVet Blog
                 </Link>
               </li>
               <li>
@@ -133,7 +133,7 @@ function SiteFooter() {
               <li>123 Pet Street</li>
               <li>Anytown, ST 12345</li>
               <li>(555) 123-4567</li>
-              <li>info@pawcare.com</li>
+              <li>info@optivet.com</li>
             </ul>
           </Col>
         </Row>
@@ -143,7 +143,7 @@ function SiteFooter() {
         <Row className="align-items-center justify-content-between">
           <Col md="auto" className="text-center text-md-start mb-2 mb-md-0">
             <small className="text-muted">
-              &copy; {new Date().getFullYear()} PawCare Veterinary Clinic. All
+              &copy; {new Date().getFullYear()} Optivet Veterinary Clinic. All
               rights reserved.
             </small>
           </Col>
