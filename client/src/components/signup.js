@@ -10,7 +10,7 @@ import {
   Alert,
 } from "react-bootstrap";
 import { PawPrint } from "lucide-react";
-import { useAuth } from "../hooks/use_auth"; // adjust if needed
+import { useAuth } from "../hooks/use_auth"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavigationBar from "./NavigationBar";
 import Footer from "./Footer";

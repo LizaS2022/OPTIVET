@@ -55,7 +55,7 @@ export function AuthProvider({ children }) {
   ) => {
     setLoading(true);
     try {
-      // Step 1: Check if email exists
+      // Check if email exists
       const { data } = await client.query({
         query: VIEW_USERS,
       });
@@ -82,7 +82,7 @@ export function AuthProvider({ children }) {
 
       const newUser = response.data.addUser;
 
-      // Step 3: Save returned user data
+      // Save returned user data
       setUser(newUser);
       localStorage.setItem("user", JSON.stringify(newUser));
       return newUser;

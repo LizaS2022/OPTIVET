@@ -76,7 +76,7 @@ export default function ScheduleAppointment() {
         networkError: error.networkError,
         graphQLErrors: error.graphQLErrors,
       });
-      // Handle error (e.g., show a notification)
+      // Handle error 
       alert("Failed to book appointment. Please try again.");
     } finally {
       setSubmitting(false);

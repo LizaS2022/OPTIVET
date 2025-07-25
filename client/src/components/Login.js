@@ -10,7 +10,7 @@ import {
   Col,
 } from "react-bootstrap";
 import { PawPrint } from "lucide-react";
-import { useAuth } from "../hooks/use_auth"; // Adjust path if needed
+import { useAuth } from "../hooks/use_auth"; 
 import "bootstrap/dist/css/bootstrap.min.css";
 
 export default function LoginPage() {

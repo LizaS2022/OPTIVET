@@ -60,7 +60,6 @@ function Main() {
             </div>
           </section>
 
-          {/* Services Section */}
           <section
             className="py-5 bg-white"
             style={{
